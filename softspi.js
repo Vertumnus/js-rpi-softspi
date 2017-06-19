@@ -171,3 +171,5 @@ class SoftSPI
       return value >> offset
    }
 }
+
+module.exports = SoftSPI
