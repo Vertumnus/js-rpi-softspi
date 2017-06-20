@@ -26,7 +26,7 @@ class SoftSPI
          mode: 0,
          bitOrder: this.MSB
       }
-      Object.assign(options, this.default)
+      options = Object.assign([], this.default, options)
       this.clock = options.clock
       this.miso = options.miso
       this.mosi = options.mosi
