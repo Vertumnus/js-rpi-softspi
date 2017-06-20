@@ -71,11 +71,34 @@ class SoftSPI
       this.valid = false
    }
 
+   static pinVal(value)
+   {
+      return (value)?rpio.HIGH:rpio.LOW
+   }
+
+   get clockOn()
+   {
+      return SoftSPI.pinVal(this.clockTrigger)
+   }
+   get clockOff()
+   {
+      return SoftSPI.pinVal(!this.clockTrigger)
+   }
+   
+   get clientOn()
+   {
+      return SoftSPI.pinVal(this.clientSelect)
+   }
+   get clientOff()
+   {
+      return SoftSPI.pinVal(!this.clientSelect)
+   }
+
    init()
    {
-      rpio.open(this.clock, rpio.OUTPUT, !this.clockTrigger )
+      rpio.open(this.clock, rpio.OUTPUT, this.clockOff )
       if(this.client)
-         rpio.open(this.client, rpio.OUTPUT, !this.clientSelect)
+         rpio.open(this.client, rpio.OUTPUT, this.clientOff )
       if(this.mosi)
          rpio.open(this.mosi, rpio.OUTPUT, rpio.LOW)
       if(this.miso)
@@ -87,13 +110,13 @@ class SoftSPI
    activateClient()
    {
       if(this.client)
-         rpio.write(this.client, this.clientSelect)
+         rpio.write(this.client, this.clientOn)
    }
 
    deactivateClient()
    {
       if(this.client)
-         rpio.write(this.client, !this.clientSelect)
+         rpio.write(this.client, this.clientOff)
    }
 
    read(bytes)
@@ -110,11 +133,11 @@ class SoftSPI
    {
       let res = 0
       if(write)
-         rpio.write(this.mosi, this.writeShift(byte, offset) & this.bitMask)
-      rpio.write(this.clock, this.clockTrigger)
+         rpio.write(this.mosi, SoftSPI.pinVal(this.writeShift(byte, offset) & this.bitMask))
+      rpio.write(this.clock, this.clockOn)
       if(read && this.clockPhase == this.ClkPhase.First)
          res = rpio.read(this.miso)
-      rpio.write(this.clock, !this.clockTrigger)
+      rpio.write(this.clock, this.clockOff)
       if(read && this.clockPhase == this.ClkPhase.Second)
          res = rpio.read(this.miso)
       return res
