@@ -10,8 +10,7 @@
    ],
    "author": "Armin",
    "contributors": [],
-   "dependencies": {},
-   "scripts": {
-      "start": "node main.js"
-   }
+   "dependencies": {
+      "rpio": "*"
+   },
 }
