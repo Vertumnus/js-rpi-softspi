@@ -48,7 +48,7 @@ class SoftSPI
       */
       console.assert(value >= 0 && value <= 3, "Mode %d not supported", value)
       this.clockPhase = value & this.ClkPhase.Second
-      this.clockTrigger = (value & this.ClkTrigger.Low)?rpio.HIGH:rpio.LOW
+      this.clockTrigger = (value & this.ClkTrigger.Low)?rpio.LOW:rpio.HIGH
 
       this.valid = false
    }
