@@ -12,5 +12,5 @@
    "contributors": [],
    "dependencies": {
       "rpio": "*"
-   },
+   }
 }
