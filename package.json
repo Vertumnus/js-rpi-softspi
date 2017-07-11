@@ -1,5 +1,5 @@
 {
-   "name": "softspi",
+   "name": "rpi-softspi",
    "description": "Software SPI implementation to use any Raspberry Pi pins as a SPI interface",
    "version": "1.0.0",
    "keywords": [
@@ -8,7 +8,15 @@
    ],
    "author": "Armin Junge",
    "license": "MIT",
+   "repository": "git://github.com/Vertumnus/js-rpi-softspi.git",
+   "bugs": {
+      "url": "https://github.com/Vertumnus/js-rpi-softspi/issues"
+   },
    "contributors": [],
+   "directories": {
+      "lib": "./lib",
+      "doc": "./doc"
+   },
    "dependencies": {
       "rpio": "*"
    },

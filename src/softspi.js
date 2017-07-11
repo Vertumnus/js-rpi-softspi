@@ -1,25 +1,5 @@
 /* 
- * The MIT License
- *
- * Copyright 2017 Armin Junge.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * Copyright Armin Junge
  */
 
 /* global Int8Array */
@@ -48,16 +28,6 @@ class SoftSPI
     */
    constructor(options)
    {
-      /**
-       * Most Significant Bit (= 1)
-       * @constant
-       */
-      this.MSB = 1
-      /**
-       * Least Significatn Bit (= 0)
-       * @constant
-       */
-      this.LSB = 0
       this.ClkPhase = { First:0, Second:1 }
       this.ClkTrigger = { High:0, Low:2 }
 
@@ -69,7 +39,7 @@ class SoftSPI
          client: null,
          clientSelect: rpio.LOW,
          mode: 0,
-         bitOrder: this.MSB
+         bitOrder: SoftSPI.MSB
       }
       options = Object.assign([], this.default, options)
       this.clock = options.clock
@@ -80,6 +50,23 @@ class SoftSPI
       this.mode = options.mode
       this.bitOrder = options.bitOrder
       this.valid = false
+   }
+
+   /**
+    * Most Significant Bit (= 1)
+    * @constant
+    */
+   static get MSB()
+   {
+      return 1
+   }
+   /**
+    * Least Significatn Bit (= 0)
+    * @constant
+    */
+   static get LSB()
+   {
+      return 0
    }
 
    /**
@@ -133,16 +120,16 @@ class SoftSPI
     */
    set bitOrder(order)
    {
-      if(order == this.MSB)
+      if(order == SoftSPI.MSB)
       {
-         this._bitOrder = this.MSB
+         this._bitOrder = SoftSPI.MSB
          this.bitMask = 0x80
          this.writeShift = SoftSPI.shiftLeft
          this.readShift = SoftSPI.shiftRight
       }
       else
       {
-         this._bitOrder = this.LSB
+         this._bitOrder = SoftSPI.LSB
          this.bitMask = 0x01
          this.writeShift = SoftSPI.shiftRight
          this.readShift = SoftSPI.shiftLeft
@@ -254,7 +241,7 @@ class SoftSPI
     */
    read(bytes)
    {
-      return this.transfer(Int8Array(bytes), true, false)
+      return this.transfer(new Int8Array(bytes), true, false)
    }
 
    /**
@@ -310,6 +297,7 @@ class SoftSPI
       this.assert(!write || this.mosi, "No output pin defined")
 
       let trans = Int8Array.from(data)
+      let result = []
 
       this.activateClient()
  
@@ -319,16 +307,16 @@ class SoftSPI
          for(let b = 0; b < 8; ++b)
          {
             if(this.transferBit(byte, b, read, write))
-               res |= this.readShift(this.bitMask, b)
+               res |= this.readShift(this.bitMask, b) //set bit to 1
             else
-               res &= ~this.readShift(this.bitMask, b)
+               res &= ~this.readShift(this.bitMask, b) //set bit to 0
          }
-         byte = res
+         result.push(res)
       }
 
       this.deactivateClient()
 
-      return Array.from(trans)
+      return result
    }
 
    /**
