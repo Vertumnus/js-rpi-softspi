@@ -4,7 +4,7 @@ for a Raspberry Pi. In contrast to other libraries it is a software implementati
 So it does not use the hardware SPI of the Raspberry Pi and you can choose any pin
 of the GPIO for the needed logic signals of SPI.
 
-##Motivation
+## Motivation
 I wanted to control some components with my Raspberry Pi, which are using SPI.
 But a couple of clients (e.g. WS2801 led stripe) do not support a client select.
 So I needed a software SPI and didn't find one for javascript. Now here is.
@@ -55,12 +55,12 @@ default = {
 ```
 
 Clock modes are:
-| Mode | Polarity | Phase |
-|:----:|:--------:|:-----:|
-| 0    | 0        | 0     |
-| 1    | 0        | 1     |
-| 2    | 1        | 0     |
-| 3    | 1        | 1     |
+| Mode  | Polarity | Phase |
+| :---: | :---:    | :---: |
+| 0     | 0        | 0     |
+| 1     | 0        | 1     |
+| 2     | 1        | 0     |
+| 3     | 1        | 1     |
 
 Start the communication:
 ```js
