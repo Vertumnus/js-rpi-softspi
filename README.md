@@ -1,4 +1,8 @@
 # SoftSPI
+
+[![npm](https://img.shields.io/npm/v/rpi-softspi.svg)](https://www.npmjs.com/package/rpi-softspi)
+[![npm](https://img.shields.io/npm/l/rpi-softspi.svg)](https://www.npmjs.com/package/rpi-softspi)
+
 This library contains a javascript class, which implements the SPI (Serial Peripheral Interface Bus)
 for a Raspberry Pi. In contrast to other libraries it is a software implementation.
 So it does not use the hardware SPI of the Raspberry Pi and you can choose any pin
