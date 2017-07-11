@@ -55,6 +55,7 @@ default = {
 ```
 
 Clock modes are:
+
 | Mode  | Polarity | Phase |
 | :---: | :---:    | :---: |
 | 0     | 0        | 0     |
