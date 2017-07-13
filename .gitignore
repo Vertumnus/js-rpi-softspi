@@ -1,4 +1,6 @@
 /nbproject/private/
 /nbproject/
-/dist/
 /node_modules/
+/dist/
+/.nyc_output/
+/.coveralls.yml

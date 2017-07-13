@@ -1,5 +1,8 @@
 # SoftSPI
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ca80cd5ead9d414487773148ab5122d0)](https://www.codacy.com/app/Vertumnus/js-rpi-softspi?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Vertumnus/js-rpi-softspi&amp;utm_campaign=Badge_Grade)
+[![Coverage Status](https://coveralls.io/repos/github/Vertumnus/js-rpi-softspi/badge.svg?branch=master)](https://coveralls.io/github/Vertumnus/js-rpi-softspi?branch=master)
+[![npm](https://img.shields.io/npm/dt/rpi-softspi.svg)](https://www.npmjs.com/package/rpi-softspi)
 [![npm](https://img.shields.io/npm/v/rpi-softspi.svg)](https://www.npmjs.com/package/rpi-softspi)
 [![npm](https://img.shields.io/npm/l/rpi-softspi.svg)](https://www.npmjs.com/package/rpi-softspi)
 
@@ -26,20 +29,20 @@ $ npm install rpi-softspi
 ## Usage
 Start with importing the module via:
 ```js
-var softspi = require('rpi-softspi')
+var SoftSPI = require('rpi-softspi')
 ```
 
 Create an instance for your client device specifying the used pins and 
 needed configurations for the communication in an options object:
 ```js
-let client = new softspi({
+let client = new SoftSPI({
    clock: 15,     // pin number of SCLK
    mosi: 11,      // pin number of MOSI
    miso: 13,      // pin number of MISO
    client: 16,    // pin number of CS
    clientSelect: rpio.LOW, // trigger signal for the client
    mode: 0,                // clock mode (0 - 3)
-   bitOrder: softspi.MSB   // bit order in communication
+   bitOrder: SoftSPI.MSB   // bit order in communication
 })
 ```
 > At least you have to specify the clock pin, all other can be left unspecified
@@ -96,6 +99,27 @@ Transfer data to and from the client:
 let bytes = client.transfer([0xff, 0x01, 0xab])
 ```
 > The number of returned bytes is the same number of bytes you have supplied
+
+## Example
+> We assume the connected client wants the numbers `1234` and continues to count
+> by returning `5678`.
+
+```js
+var SoftSPI = require('rpi-softspi')
+
+let client = new SoftSPI({
+   clock: 15,     // pin number of SCLK
+   mosi: 11,      // pin number of MOSI
+   miso: 13,      // pin number of MISO
+   client: 16,    // pin number of CS
+})
+
+client.open()
+let send = [1, 2, 3, 4]
+let answer = client.transfer(send)
+console.log("Count: " + send.toString() + "..." + answer.toString()) // Count: 1,2,3,4...5,6,7,8
+client.close()
+```
 
 ## API
 Check out the [documentation](doc) for details.

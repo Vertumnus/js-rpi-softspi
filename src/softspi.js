@@ -120,15 +120,13 @@ class SoftSPI
     */
    set bitOrder(order)
    {
-      if(order == SoftSPI.MSB)
-      {
+      if(order === SoftSPI.MSB){
          this._bitOrder = SoftSPI.MSB
          this.bitMask = 0x80
          this.writeShift = SoftSPI.shiftLeft
          this.readShift = SoftSPI.shiftRight
       }
-      else
-      {
+      else{
          this._bitOrder = SoftSPI.LSB
          this.bitMask = 0x01
          this.writeShift = SoftSPI.shiftRight
@@ -301,11 +299,9 @@ class SoftSPI
 
       this.activateClient()
  
-      for(let byte of trans)
-      {
+      for(let byte of trans){
          let res = 0
-         for(let b = 0; b < 8; ++b)
-         {
+         for(let b = 0; b < 8; ++b){
             if(this.transferBit(byte, b, read, write))
                res |= this.readShift(this.bitMask, b) //set bit to 1
             else
