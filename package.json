@@ -1,10 +1,14 @@
 {
    "name": "rpi-softspi",
    "description": "Software SPI implementation to use any Raspberry Pi pins as a SPI interface",
-   "version": "1.0.2",
+   "version": "1.0.3",
    "keywords": [
-      "Raspberry",
-      "SPI"
+      "spi",
+      "raspberry",
+      "raspberrypi",
+      "raspberry pi",
+      "rpi",
+      "gpio"
    ],
    "author": "Armin Junge",
    "license": "MIT",

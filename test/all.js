@@ -3,12 +3,12 @@
  */
 
 
-var mock = require('mock-require')
-mock('rpio', {
+var mock = require("mock-require")
+mock("rpio", {
    LOW: 0,
    HIGH: 1,
-   INPUT: 'I',
-   OUTPUT: 'O',
+   INPUT: "I",
+   OUTPUT: "O",
    open: function(...args){
       this.result.open.push(args)
    },
@@ -16,11 +16,11 @@ mock('rpio', {
       this.result.close.push(args)
    },
    write: function(...args){
-      args.unshift('w')
+      args.unshift("w")
       this.result.comm.push(args)
    },
    read: function(...args){
-      args.unshift('r')
+      args.unshift("r")
       this.result.comm.push(args)
       return (0xca >> this.rcounter++) & 0x01 //test byte: 11001010
    },
@@ -38,11 +38,11 @@ mock('rpio', {
    }
 })
 
-var assert = require('assert')
-var rpio = require('rpio')
-var SoftSPI = require('../src/softspi.js')
+var assert = require("assert")
+var rpio = require("rpio")
+var SoftSPI = require("../src/softspi.js")
 
-describe('SoftSPI', function(){
+describe("SoftSPI", function(){
    let firstClient = new SoftSPI({
          clock: 23,
          miso: 21,
@@ -60,9 +60,9 @@ describe('SoftSPI', function(){
       })
    let slave = new SoftSPI({ clock: 5 })
    
-   describe('#constructor', function(){
+   describe("#constructor", function(){
       it("should throw an exception, because mandatory clock pin is not specified", function(){
-         assert.throws(() => { new SoftSPI({}) }, 
+         assert.throws(() => { let spi = new SoftSPI({}) }, 
                         /Clock.*specified/)
       })
       it("should have correct clock pin", function(){
@@ -79,9 +79,9 @@ describe('SoftSPI', function(){
       })
    })
    
-   describe('#Connection', function(){
-      describe('-slave', function(){
-         describe('.open', function(){
+   describe("#Connection", function(){
+      describe("-slave", function(){
+         describe(".open", function(){
             before(function(){
                rpio.reset()
                slave.open()
@@ -96,7 +96,7 @@ describe('SoftSPI', function(){
                assert.ok(slave.valid)
             })
          })
-         describe('.close', function(){
+         describe(".close", function(){
             before(function(){
                slave.close()
             })
@@ -112,8 +112,8 @@ describe('SoftSPI', function(){
          })
       })
       
-      describe('-firstClient', function(){
-         describe('.open', function(){
+      describe("-firstClient", function(){
+         describe(".open", function(){
             before(function(){
                rpio.reset()
                firstClient.open()
@@ -131,7 +131,7 @@ describe('SoftSPI', function(){
                assert.ok(firstClient.valid)
             })
          })
-         describe('.close', function(){
+         describe(".close", function(){
             before(function(){
                firstClient.close()
             })
@@ -150,7 +150,7 @@ describe('SoftSPI', function(){
          })
       })
       
-      describe('-secondClient', function(){
+      describe("-secondClient", function(){
          before(function(){
             rpio.reset()
             secondClient.open()
@@ -173,8 +173,8 @@ describe('SoftSPI', function(){
       })
    })
    
-   describe('#write', function(){
-      describe('-firstClient', function(){
+   describe("#write", function(){
+      describe("-firstClient", function(){
          before(function(){
             rpio.reset()
             firstClient.open()
@@ -182,32 +182,32 @@ describe('SoftSPI', function(){
          it("should write 0xCA in correct way", function(){
             firstClient.write([0xca]) //bin: 11001010
             let expected = [ //we walk from left to right in the byte
-               [ 'w', 24, rpio.LOW ], //client on
-               [ 'w', 19, rpio.HIGH ], //MOSI 1st bit
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 19, rpio.HIGH ], //MOSI 2nd bit
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 19, rpio.LOW ], //MOSI 3rd bit
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 19, rpio.LOW ], //MOSI 4th bit
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 19, rpio.HIGH ], //MOSI 5th bit
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 19, rpio.LOW ], //MOSI 6th bit
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 19, rpio.HIGH ], //MOSI 7th bit
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 19, rpio.LOW ], //MOSI 8th bit
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 24, rpio.HIGH ] //client off
+               [ "w", 24, rpio.LOW ], //client on
+               [ "w", 19, rpio.HIGH ], //MOSI 1st bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.HIGH ], //MOSI 2nd bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.LOW ], //MOSI 3rd bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.LOW ], //MOSI 4th bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.HIGH ], //MOSI 5th bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.LOW ], //MOSI 6th bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.HIGH ], //MOSI 7th bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.LOW ], //MOSI 8th bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 24, rpio.HIGH ] //client off
             ]
             assert.deepEqual(rpio.result.comm, expected)
          })
@@ -216,7 +216,7 @@ describe('SoftSPI', function(){
          })
       })
       
-      describe('-secondClient', function(){
+      describe("-secondClient", function(){
          before(function(){
             rpio.reset()
             secondClient.open()
@@ -224,32 +224,32 @@ describe('SoftSPI', function(){
          it("should write 0xCA in correct way", function(){
             secondClient.write([0xca]) //bin: 11001010
             let expected = [ //we walk from right to left in the byte
-               [ 'w', 26, rpio.HIGH ], //client on
-               [ 'w', 19, rpio.LOW ], //MOSI 1st bit
-               [ 'w', 23, rpio.LOW ], //clock on
-               [ 'w', 23, rpio.HIGH ], //clock off
-               [ 'w', 19, rpio.HIGH ], //MOSI 2nd bit
-               [ 'w', 23, rpio.LOW ], //clock on
-               [ 'w', 23, rpio.HIGH ], //clock off
-               [ 'w', 19, rpio.LOW ], //MOSI 3rd bit
-               [ 'w', 23, rpio.LOW ], //clock on
-               [ 'w', 23, rpio.HIGH ], //clock off
-               [ 'w', 19, rpio.HIGH ], //MOSI 4th bit
-               [ 'w', 23, rpio.LOW ], //clock on
-               [ 'w', 23, rpio.HIGH ], //clock off
-               [ 'w', 19, rpio.LOW ], //MOSI 5th bit
-               [ 'w', 23, rpio.LOW ], //clock on
-               [ 'w', 23, rpio.HIGH ], //clock off
-               [ 'w', 19, rpio.LOW ], //MOSI 6th bit
-               [ 'w', 23, rpio.LOW ], //clock on
-               [ 'w', 23, rpio.HIGH ], //clock off
-               [ 'w', 19, rpio.HIGH ], //MOSI 7th bit
-               [ 'w', 23, rpio.LOW ], //clock on
-               [ 'w', 23, rpio.HIGH ], //clock off
-               [ 'w', 19, rpio.HIGH ], //MOSI 8th bit
-               [ 'w', 23, rpio.LOW ], //clock on
-               [ 'w', 23, rpio.HIGH ], //clock off
-               [ 'w', 26, rpio.LOW ] //client off
+               [ "w", 26, rpio.HIGH ], //client on
+               [ "w", 19, rpio.LOW ], //MOSI 1st bit
+               [ "w", 23, rpio.LOW ], //clock on
+               [ "w", 23, rpio.HIGH ], //clock off
+               [ "w", 19, rpio.HIGH ], //MOSI 2nd bit
+               [ "w", 23, rpio.LOW ], //clock on
+               [ "w", 23, rpio.HIGH ], //clock off
+               [ "w", 19, rpio.LOW ], //MOSI 3rd bit
+               [ "w", 23, rpio.LOW ], //clock on
+               [ "w", 23, rpio.HIGH ], //clock off
+               [ "w", 19, rpio.HIGH ], //MOSI 4th bit
+               [ "w", 23, rpio.LOW ], //clock on
+               [ "w", 23, rpio.HIGH ], //clock off
+               [ "w", 19, rpio.LOW ], //MOSI 5th bit
+               [ "w", 23, rpio.LOW ], //clock on
+               [ "w", 23, rpio.HIGH ], //clock off
+               [ "w", 19, rpio.LOW ], //MOSI 6th bit
+               [ "w", 23, rpio.LOW ], //clock on
+               [ "w", 23, rpio.HIGH ], //clock off
+               [ "w", 19, rpio.HIGH ], //MOSI 7th bit
+               [ "w", 23, rpio.LOW ], //clock on
+               [ "w", 23, rpio.HIGH ], //clock off
+               [ "w", 19, rpio.HIGH ], //MOSI 8th bit
+               [ "w", 23, rpio.LOW ], //clock on
+               [ "w", 23, rpio.HIGH ], //clock off
+               [ "w", 26, rpio.LOW ] //client off
             ]
             assert.deepEqual(rpio.result.comm, expected)
          })
@@ -259,8 +259,8 @@ describe('SoftSPI', function(){
       })
    })
    
-   describe('#read', function(){
-      describe('-firstClient', function(){
+   describe("#read", function(){
+      describe("-firstClient", function(){
          before(function(){
             rpio.reset()
             firstClient.open()
@@ -268,32 +268,32 @@ describe('SoftSPI', function(){
          it("should read the reversed test byte in correct way", function(){
             let bytes = firstClient.read(1)
             let expected = [
-               [ 'w', 24, rpio.LOW ], //client on
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'r', 21 ], //MISO 1st bit
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'r', 21 ], //MISO 2nd bit
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'r', 21 ], //MISO 3rd bit
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'r', 21 ], //MISO 4th bit
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'r', 21 ], //MISO 5th bit
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'r', 21 ], //MISO 6th bit
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'r', 21 ], //MISO 7th bit
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'r', 21 ], //MISO 8th bit
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 24, rpio.HIGH ] //client off
+               [ "w", 24, rpio.LOW ], //client on
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "r", 21 ], //MISO 1st bit
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "r", 21 ], //MISO 2nd bit
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "r", 21 ], //MISO 3rd bit
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "r", 21 ], //MISO 4th bit
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "r", 21 ], //MISO 5th bit
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "r", 21 ], //MISO 6th bit
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "r", 21 ], //MISO 7th bit
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "r", 21 ], //MISO 8th bit
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 24, rpio.HIGH ] //client off
             ]
             assert.deepEqual(rpio.result.comm, expected)
             assert.equal(bytes[0], 0x53) //test byte reversed: 01010011
@@ -303,7 +303,7 @@ describe('SoftSPI', function(){
          })
       })
       
-      describe('-secondClient', function(){
+      describe("-secondClient", function(){
          before(function(){
             rpio.reset()
             secondClient.open()
@@ -311,32 +311,32 @@ describe('SoftSPI', function(){
          it("should read the test byte in correct way", function(){
             let bytes = secondClient.read(1)
             let expected = [
-               [ 'w', 26, rpio.HIGH ], //client on
-               [ 'w', 23, rpio.LOW ], //clock on
-               [ 'w', 23, rpio.HIGH ], //clock off
-               [ 'r', 21 ], //MISO 1st bit
-               [ 'w', 23, rpio.LOW ], //clock on
-               [ 'w', 23, rpio.HIGH ], //clock off
-               [ 'r', 21 ], //MISO 2nd bit
-               [ 'w', 23, rpio.LOW ], //clock on
-               [ 'w', 23, rpio.HIGH ], //clock off
-               [ 'r', 21 ], //MISO 3rd bit
-               [ 'w', 23, rpio.LOW ], //clock on
-               [ 'w', 23, rpio.HIGH ], //clock off
-               [ 'r', 21 ], //MISO 4th bit
-               [ 'w', 23, rpio.LOW ], //clock on
-               [ 'w', 23, rpio.HIGH ], //clock off
-               [ 'r', 21 ], //MISO 5th bit
-               [ 'w', 23, rpio.LOW ], //clock on
-               [ 'w', 23, rpio.HIGH ], //clock off
-               [ 'r', 21 ], //MISO 6th bit
-               [ 'w', 23, rpio.LOW ], //clock on
-               [ 'w', 23, rpio.HIGH ], //clock off
-               [ 'r', 21 ], //MISO 7th bit
-               [ 'w', 23, rpio.LOW ], //clock on
-               [ 'w', 23, rpio.HIGH ], //clock off
-               [ 'r', 21 ], //MISO 8th bit
-               [ 'w', 26, rpio.LOW ] //client off
+               [ "w", 26, rpio.HIGH ], //client on
+               [ "w", 23, rpio.LOW ], //clock on
+               [ "w", 23, rpio.HIGH ], //clock off
+               [ "r", 21 ], //MISO 1st bit
+               [ "w", 23, rpio.LOW ], //clock on
+               [ "w", 23, rpio.HIGH ], //clock off
+               [ "r", 21 ], //MISO 2nd bit
+               [ "w", 23, rpio.LOW ], //clock on
+               [ "w", 23, rpio.HIGH ], //clock off
+               [ "r", 21 ], //MISO 3rd bit
+               [ "w", 23, rpio.LOW ], //clock on
+               [ "w", 23, rpio.HIGH ], //clock off
+               [ "r", 21 ], //MISO 4th bit
+               [ "w", 23, rpio.LOW ], //clock on
+               [ "w", 23, rpio.HIGH ], //clock off
+               [ "r", 21 ], //MISO 5th bit
+               [ "w", 23, rpio.LOW ], //clock on
+               [ "w", 23, rpio.HIGH ], //clock off
+               [ "r", 21 ], //MISO 6th bit
+               [ "w", 23, rpio.LOW ], //clock on
+               [ "w", 23, rpio.HIGH ], //clock off
+               [ "r", 21 ], //MISO 7th bit
+               [ "w", 23, rpio.LOW ], //clock on
+               [ "w", 23, rpio.HIGH ], //clock off
+               [ "r", 21 ], //MISO 8th bit
+               [ "w", 26, rpio.LOW ] //client off
             ]
             assert.deepEqual(rpio.result.comm, expected)
             assert.equal(bytes[0], 0xca)
@@ -347,10 +347,10 @@ describe('SoftSPI', function(){
       })
    })
    
-   describe('#transfer', function(){
-      describe('-slave', function(){
+   describe("#transfer", function(){
+      describe("-slave", function(){
          it("should throw an exception, because invalidity", function(){
-            slave.close() //get sure it's invalid
+            slave.close() //get sure it"s invalid
             assert.throws( () => { slave.transfer([0xca]) },
                            /Not initialized/)
          })
@@ -374,7 +374,7 @@ describe('SoftSPI', function(){
          })
       })
       
-      describe('-firstClient', function(){
+      describe("-firstClient", function(){
          before(function(){
             rpio.reset()
             firstClient.open()
@@ -382,40 +382,40 @@ describe('SoftSPI', function(){
          it("should transfer test byte in correct way", function(){
             let bytes = firstClient.transfer([0xca])
             let expected = [ //we walk from left to right in the byte
-               [ 'w', 24, rpio.LOW ], //client on
-               [ 'w', 19, rpio.HIGH ], //MOSI 1st bit
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'r', 21 ], //MISO 1st bit
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 19, rpio.HIGH ], //MOSI 2nd bit
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'r', 21 ], //MISO 2nd bit
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 19, rpio.LOW ], //MOSI 3rd bit
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'r', 21 ], //MISO 3rd bit
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 19, rpio.LOW ], //MOSI 4th bit
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'r', 21 ], //MISO 4th bit
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 19, rpio.HIGH ], //MOSI 5th bit
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'r', 21 ], //MISO 5th bit
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 19, rpio.LOW ], //MOSI 6th bit
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'r', 21 ], //MISO 6th bit
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 19, rpio.HIGH ], //MOSI 7th bit
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'r', 21 ], //MISO 7th bit
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 19, rpio.LOW ], //MOSI 8th bit
-               [ 'w', 23, rpio.HIGH ], //clock on
-               [ 'r', 21 ], //MISO 8th bit
-               [ 'w', 23, rpio.LOW ], //clock off
-               [ 'w', 24, rpio.HIGH ] //client off
+               [ "w", 24, rpio.LOW ], //client on
+               [ "w", 19, rpio.HIGH ], //MOSI 1st bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "r", 21 ], //MISO 1st bit
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.HIGH ], //MOSI 2nd bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "r", 21 ], //MISO 2nd bit
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.LOW ], //MOSI 3rd bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "r", 21 ], //MISO 3rd bit
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.LOW ], //MOSI 4th bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "r", 21 ], //MISO 4th bit
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.HIGH ], //MOSI 5th bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "r", 21 ], //MISO 5th bit
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.LOW ], //MOSI 6th bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "r", 21 ], //MISO 6th bit
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.HIGH ], //MOSI 7th bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "r", 21 ], //MISO 7th bit
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.LOW ], //MOSI 8th bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "r", 21 ], //MISO 8th bit
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 24, rpio.HIGH ] //client off
             ]
             assert.deepEqual(rpio.result.comm, expected)
             assert.equal(bytes[0], 0x53) //test byte reversed: 01010011

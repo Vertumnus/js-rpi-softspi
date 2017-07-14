@@ -270,11 +270,30 @@ class SoftSPI
       if(write)
          rpio.write(this.mosi, SoftSPI.pinVal(this.writeShift(byte, offset) & this.bitMask))
       rpio.write(this.clock, this.clockOn)
-      if(read && this.clockPhase == this.ClkPhase.First)
+      if(read && this.clockPhase === this.ClkPhase.First)
          res = rpio.read(this.miso)
       rpio.write(this.clock, this.clockOff)
-      if(read && this.clockPhase == this.ClkPhase.Second)
+      if(read && this.clockPhase === this.ClkPhase.Second)
          res = rpio.read(this.miso)
+      return res
+   }
+
+   /**
+    * Transfers a single byte to and from the client.
+    * @private
+    * @param {Byte} byte - Current byte for transfer to the client
+    * @param {Boolean} read - Read a byte from the client
+    * @param {Boolean} write - Write a byte to the client
+    * @returns {Byte}
+    */
+   transferByte(byte, read, write){
+      let res = 0
+      for(let b = 0; b < 8; ++b)
+         if(this.transferBit(byte, b, read, write))
+            res |= this.readShift(this.bitMask, b) //set bit to 1
+         else
+            res &= ~this.readShift(this.bitMask, b) //set bit to 0
+      
       return res
    }
 
@@ -299,16 +318,8 @@ class SoftSPI
 
       this.activateClient()
  
-      for(let byte of trans){
-         let res = 0
-         for(let b = 0; b < 8; ++b){
-            if(this.transferBit(byte, b, read, write))
-               res |= this.readShift(this.bitMask, b) //set bit to 1
-            else
-               res &= ~this.readShift(this.bitMask, b) //set bit to 0
-         }
-         result.push(res)
-      }
+      for(let byte of trans)
+         result.push(this.transferByte(byte, read, write))
 
       this.deactivateClient()
 

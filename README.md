@@ -29,7 +29,7 @@ $ npm install rpi-softspi
 ## Usage
 Start with importing the module via:
 ```js
-var SoftSPI = require('rpi-softspi')
+var SoftSPI = require("rpi-softspi")
 ```
 
 Create an instance for your client device specifying the used pins and 
@@ -105,7 +105,7 @@ let bytes = client.transfer([0xff, 0x01, 0xab])
 > by returning `5678`.
 
 ```js
-var SoftSPI = require('rpi-softspi')
+var SoftSPI = require("rpi-softspi")
 
 let client = new SoftSPI({
    clock: 15,     // pin number of SCLK
@@ -117,7 +117,8 @@ let client = new SoftSPI({
 client.open()
 let send = [1, 2, 3, 4]
 let answer = client.transfer(send)
-console.log("Count: " + send.toString() + "..." + answer.toString()) // Count: 1,2,3,4...5,6,7,8
+// Count: 1,2,3,4...5,6,7,8
+console.log("Count: " + send.toString() + "..." + answer.toString())
 client.close()
 ```
 
