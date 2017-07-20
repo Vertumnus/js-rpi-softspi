@@ -42,6 +42,11 @@ module.exports = function (grunt) {
                cmd: "run",
                args: ["coverage"]
             }
+         },
+         publish: {
+            options: {
+               cmd: "publish"
+            }
          }
       },
       coveralls: {
@@ -61,6 +66,6 @@ module.exports = function (grunt) {
    grunt.registerTask("doc", ["jsdoc"])
    grunt.registerTask("test", ["npm-command:test"])
    grunt.registerTask("coverage", ["npm-command:coverage"])
-   grunt.registerTask("push-coverage", ["coveralls"])
+   grunt.registerTask("publish", ["coveralls", "npm-command:publish"])
    grunt.registerTask("default", ["jshint", "npm-command:coverage", "jsdoc", "uglify"])
 }
