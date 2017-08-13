@@ -2,7 +2,7 @@
  * Copyright Armin Junge
  */
 
-/* global Int8Array */
+/* global Uint8Array */
 
 var rpio = require("rpio")
 
@@ -239,7 +239,7 @@ class SoftSPI
     */
    read(bytes)
    {
-      return this.transfer(new Int8Array(bytes), true, false)
+      return this.transfer(new Uint8Array(bytes), true, false)
    }
 
    /**
@@ -313,7 +313,7 @@ class SoftSPI
       this.assert(!read || this.miso, "No input pin defined")
       this.assert(!write || this.mosi, "No output pin defined")
 
-      let trans = Int8Array.from(data)
+      let trans = Uint8Array.from(data)
       let result = []
 
       this.activateClient()
