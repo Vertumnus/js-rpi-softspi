@@ -179,10 +179,11 @@ describe("SoftSPI", function(){
             rpio.reset()
             firstClient.open()
          })
-         it("should write 0xCA in correct way", function(){
-            firstClient.write([0xca]) //bin: 11001010
+         it("should write 0xCA, 0x00, 0xff in correct way", function(){
+            firstClient.write([0xca, 0x00, 0xff]) //bin: 11001010, 00000000, 11111111
             let expected = [ //we walk from left to right in the byte
                [ "w", 24, rpio.LOW ], //client on
+               /* first byte */
                [ "w", 19, rpio.HIGH ], //MOSI 1st bit
                [ "w", 23, rpio.HIGH ], //clock on
                [ "w", 23, rpio.LOW ], //clock off
@@ -207,6 +208,57 @@ describe("SoftSPI", function(){
                [ "w", 19, rpio.LOW ], //MOSI 8th bit
                [ "w", 23, rpio.HIGH ], //clock on
                [ "w", 23, rpio.LOW ], //clock off
+               /* second byte */
+               [ "w", 19, rpio.LOW ], //MOSI 1st bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.LOW ], //MOSI 2nd bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.LOW ], //MOSI 3rd bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.LOW ], //MOSI 4th bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.LOW ], //MOSI 5th bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.LOW ], //MOSI 6th bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.LOW ], //MOSI 7th bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.LOW ], //MOSI 8th bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               /* third byte */
+               [ "w", 19, rpio.HIGH ], //MOSI 1st bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.HIGH ], //MOSI 2nd bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.HIGH ], //MOSI 3rd bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.HIGH ], //MOSI 4th bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.HIGH ], //MOSI 5th bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.HIGH ], //MOSI 6th bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.HIGH ], //MOSI 7th bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               [ "w", 19, rpio.HIGH ], //MOSI 8th bit
+               [ "w", 23, rpio.HIGH ], //clock on
+               [ "w", 23, rpio.LOW ], //clock off
+               /* end */
                [ "w", 24, rpio.HIGH ] //client off
             ]
             assert.deepEqual(rpio.result.comm, expected)
